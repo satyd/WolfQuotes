@@ -1,0 +1,24 @@
+rAdj : [adjectivesS::adjectivesH(6)];
+rAdjWhomM : [adjectivesH$adj, p.T, t.H, g.M];
+rItem : [nounsItem3::nounsItemFH(4)::nounsItemM2H(3)];
+rInf : [infinitivesDo::infinitivesDone::infinitivesDoObj::infinitivesDoSubj];
+rVerb : [verbsDoneObj::verbsDone::verbsSubj];
+rAbs : [nounsAbs1H(2)::nounsAbsM2H(3)::nounsAbs3::nounsAbsAS(3)::nounsAbsAH];
+rQuestion : [что::зачем::почему::когда];
+sToWhom2 : [nounsSubjM2H$second, p.D, t.H, g.M];
+sWhom2 : [nounsSubjM2H$second, p.R, t.H, g.M];
+sByWhom2 : [nounsSubjM2H$second, p.T, t.H, g.M];
+sAboutWhom2 : [nounsSubjM2H$second, p.P, t.H, g.M];
+rNot : [$$rNot];
+rActInfDo : [{infinitivesDoSubj && nounsSubjM2H$second, p.R, t.H, g.M}(4)::
+			{infinitivesDoObj && nounsItemM2H$second, p.V, t.H, g.M}(3)::
+			{infinitivesDoTo && nounsSubjM2H$second, p.D, t.H, g.M}(2)::
+			{infinitivesDoInPlace && nounsContainer}(2)];
+rAction : [{verbsSubj && @sWhom2}(4)::
+			{verbsObj && nounsItemM2H}(1)::
+			{verbsInPlace && nounsContainer}(2)::
+			{verbsInDirection && nounsDirection}(2)::verbs];
+rNotAction : [{@sWhom2 && не && verbsSubj}(4)::
+			{nounsItemM2H && не && verbsObj}(3)::
+			{nounsContainer && не && verbsInPlace}(2)::
+			{nounsDirection && не && verbsInDirection}(2)::{не  && verbs}];

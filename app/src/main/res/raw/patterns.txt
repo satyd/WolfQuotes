@@ -1,0 +1,145 @@
+#0
+[nounsSubjM2H$U] [adverbsCmpL] [@sWhom2], но [nounsContainer] не [verbsInPlace].
+[nounsSubjM2H$U] [adverbsCmpL] [@sWhom2], но [@rNotAction].
+#1_beg
+Если ты не можешь [infinitivesDone::infinitivesDoneObj],
+Если тебе [adverbsHowCmp] [infinitivesDo::{infinitivesDoObj && nounsItemM2H$second, p.V, t.H, g.M}::infinitivesDone],
+Если тебе [adverbsHowCmp] [infinitivesDo::{infinitivesDoObj && nounsItemM2H$second, p.V, t.H, g.M}::infinitivesDone],
+#1_end
+значит ты [adjectivesH].
+значит ты [adjectivesH] [nounsSubjM2H].
+значит нужно было [лучше::раньше] [infinitivesDo].
+#2_beg
+Если [nounsSubjM2H] [verbsSubj::verbs],
+Если [nounsSubjM2H] [adjectivesH::verbsDone::{verbsDoneAbs && nounsAbs1H$first, p.V, t.H:nounsAbs3:nounsAbsM2H}],
+Если [nounsSubjM2H] [verbsAbs] [nounsAbs1H$first, p.V, t.H::nounsAbs3::nounsAbsM2H],
+#2_end
+то [лучше его не::не стоит его] [infinitivesDoSubj].
+то [лучше его не::не стоит его] [infinitivesDoSubj].
+значит он [плохо::хорошо] [verbs].
+значит он [плохо::хорошо] [verbs].
+значит он [{плохо:хорошо && verbs}::adjectivesH].
+#3
+[adjectivesH$U] не тот [nounsSubjM2H], который всех [verbsObjDone], а тот, кто хорошо [verbsDone].
+#4
+Лучше [nounsItemFH:nounsItemM2H(3):nounsItem3] [nounsContainer], чем [nounsItemFH:nounsItemM2H:nounsItemM2H:nounsItem3] [nounsContainer].
+#5
+Сколько [nounsSubjM2H$second, p.R, t.H, G.M] не [verbsOrderSubj], всё равно [nounsDirection] [verbsInDirection].
+#6
+Даже если ты [nounsContainer], не обязательно быть [@sByWhom2].
+Даже если ты [nounsContainer], не обязательно быть [adjectivesH$adj, p.T, t.H, g.M] [@sByWhom2].
+#7
+[adjectivesH$adj, p.D, t.H, g.M, U] [@sToWhom2] [$$rItem][$$rNot]мешает.
+#8
+Чтобы стать [adjectivesH$adj, p.T, t.H, g.M] [@sByWhom2],[$$rNot]нужно [{infinitivesDoInPlace && nounsContainer}::{infinitivesDoInDirection && nounsDirection}].
+#9
+[Лучше(3)::Хуже] быть [@rAdjWhomM] [@sByWhom2], чем [@rAdjWhomM] [@sByWhom2].(2)
+Лучше [@rItem] [nounsContainer], чем [@rAbs] [nounsContainer].(2)
+Лучше [$$rItem] в руках, чем [$$rItem] [nounsContainer].(3)
+Лучше [$$rItem] в руках, чем [$$rItem] в [заднице::жопе].
+#10
+Неважно кто [напротив::adjectivesH::nounsContainer], важно кто [verbsDone::{verbsObjDone && @sWhom2}::{verbsSubj && @sWhom2}].
+Неважно кто [первым::вторым::последним] [verbsDone::verbsObjDone], важно кто [первым::вторым::последним] [verbsDone::verbsObjDone].
+Неважно [@rQuestion] [nounsSubjM2H] [verbsSubj::verbsObjDone::verbsObj], важно [@rQuestion] он [verbsSubj::verbsObjDone::verbsObj].
+#11
+[$$rAdj, U] снаружи [verbsDone::verbsObjDone] внутри однажды.
+#12
+Запомните твари: [$$rAdj] [nounsSubjM2H] [nounsContainer] [@rAction].
+#13
+[Если::Когда] [@sToWhom2] [adverbsHowCmp] [infinitivesDo::{infinitivesDoWith && @sByWhom2}::{infinitivesDoInDirection && nounsDirection}::{infinitivesDoInPlace && nounsContainer}], это не значит, что [adverbsHowCmp], [adverbsPossible] он просто [verbsDone].
+#14_beg
+[Лучше(3)::Хуже] один раз [infinitivesDoneSubj] [@sWhom2]
+[Лучше(3)::Хуже] один раз [infinitivesDoneWhom] [@sByWhom2]
+#14_end
+, чем сто раз ему [infinitivesDone::infinitivesDoneTo::infinitivesDoneAction].
+, чем сто раз [infinitivesDoneSubj] его.
+, чем сто раз [infinitivesDoneWhom] [@sByWhom2].
+, чем сто раз [infinitivesDoneTo] [@sToWhom2].
+#15
+[adverbsCmpG::adverbsCmpL$$U] всего [infinitivesDone::infinitivesDoneObj], когда ты [verbsDone].
+#16
+Даже самому [adjectivesH$adj, p.D, t.H, g.M] [@sToWhom2] иногда нужно [infinitivesDoneObj] [nounsItemFH$first, p.V, t.H::nounsItemM2H$second, p.V, t.H, g.M].(2)
+Даже самая [adjectivesH$adj, p.I, t.H, g.F] [nounsItemFH] может [infinitivesDoneObj] [nounsItemM2H].
+#17
+[nounsAbsImm$U][$$rNot]может [infinitivesDoneObj] [nounsItemM2H], когда [nounsSubjM2H] [verbsSubj] [nounsContainer].
+#18
+Если [nounsSubjM2H] хочет [infinitivesDone::infinitivesDoneObj], то лучше его не [infinitivesDoSubj].
+#19
+Сам [@sWhom2] [verbsObjDone] — сам его и [verbsOrderSubj].
+Сам [nounsItemFH$first, p.V, t.H] [verbsObjDone] — сам ее и [verbsOrderSubj].
+[nounsAbs3$U] [infinitivesDoneFeel] — не [{nounsContainer && infinitivesDonePlace}::{nounsDirection && infinitivesDoneDirection}].
+#20_beg
+[Лучше(3)::Хуже] один раз [infinitivesDone::infinitivesDoneAction]
+[Лучше(3)::Хуже] один раз [infinitivesDoneSubj] [@sWhom2]
+[Лучше(3)::Хуже] один раз [infinitivesDoneWhom] [@sByWhom2]
+[Лучше(3)::Хуже] один раз [infinitivesDonePlace] [nounsContainer]
+#20_end
+, чем сто раз [infinitivesDoneObj] [nounsItemM2H$second, p.V, t.H, g.M::nounsAbsM2H$second, p.V, t.H, g.M].
+, чем сто раз [infinitivesDoneFeel] [nounsAbs3::nounsAbsAS].
+#21
+Зачем быть [adjectivesH$adj, p.T, t.H, g.M] [@sByWhom2], если [можно::нельзя] [infinitivesDoneDirection] [nounsDirection]?
+Зачем [infinitivesDoSubj] [@sWhom2], если [можно::нельзя] ему [infinitivesDoneTo]?
+Зачем [infinitivesDoSubj] [@sWhom2], если [можно::нельзя] его [infinitivesDoneSubj]?
+Зачем [infinitivesDoSubj] [@sWhom2], если [можно::нельзя] его [infinitivesDoneSubj]?
+#22
+[infinitivesDone::infinitivesDoneObj$$U] не значит [infinitivesDone::infinitivesDoneObj].
+[@rAbs$$U] не значит [@rAbs].
+#23
+Если ты не смог [@rAction] -- значит плохо делал.
+#24
+Чтобы [infinitivesDone::infinitivesDoneObj] — нужно [infinitivesDone].
+#25
+Когда находишься [nounsContainer], главное не [@rInf].
+#26_beg
+[Лучше(3)::Хуже] один раз [infinitivesDone::infinitivesDoneAction]
+[Лучше(3)::Хуже] один раз [infinitivesDoneSubj] [@sWhom2]
+[Лучше(3)::Хуже] один раз [infinitivesDoneWhom] [@sByWhom2]
+[Лучше(3)::Хуже] один раз [infinitivesDonePlace] [nounsContainer]
+#26_end
+, чем сто раз [infinitivesDone::infinitivesDoneAction].
+, чем сто раз [infinitivesDoneWhom] [@sByWhom2].
+, чем сто раз [infinitivesDoneTo] [@sToWhom2].
+, чем сто раз [infinitivesDoneObj] [nounsItemM2H$second, p.V, t.H, g.M].
+, чем сто раз [infinitivesDoneFeel] [nounsAbs3::nounsAbsAS].
+#27
+Если [nounsContainer] [adverbsAmbient] — [значит(6)::это не значит, что(3)] [adverbsPermission] [$$rActInfDo].
+Если [nounsSubjM2H] [@rAction(2)::@rNotAction] — [значит(6)::это не значит, что(3)] [adverbsPermission] [$$rActInfDo].(3)
+#28
+[nounsAbsM2H::nounsAbsAS$$U] [verbsLearn] [nounsContainer].
+[Настоящее::Подлинное] [nounsAbsAH::nounsAbsAS] [verbsLearn] [nounsContainer].
+#29
+[$$rAdj, U] [nounsItemM2H] — [nounsAbsM2H::nounsAbsAS] [nounsContainer].
+[{adjectivesH && nounsItemM2H}::{adjectivesH$adj, p.I, t.H, g.F && nounsAbs3:nounsAbs1H}$$U] — [горе::счастье::nounsAbsAS::nounsAbs1H] [nounsContainer].
+#30
+[$$rItem, U] на хлеб не намажешь.
+#31
+[nounsSubjM2H$U] не [nounsSubjM2H], [$$rItem] не [$$rItem], [$$rInf] не [$$rInf] — кто [$$rVerb], тот и [verbsSubj].
+[adverbsPlaceCmp$U] [$$rItem]. [adverbsPlaceCmp$U] [$$rItem]. Кто [verbsDoneAbs::verbsObjDone], тот и [verbsDoneAbs::verbsObjDone].
+#32
+Если [@sWhom2] вовремя не [infinitivesDoneObj], то придётся [{infinitivesDoneSubj && @sWhom2}::{infinitivesDoneObj && nounsItemM2H$second, p.V, t.H, g.M}].
+#33
+Раз в год и [nounsItemFH::nounsAbs1H::nounsAbs3] [verbs].
+Раз в год и [nounsItemFH::nounsAbs1H::nounsAbs3] [verbsSubj] [nounsAbs1H$first, p.V, t.H::nounsAbs3$third, p.V].
+Раз в год и [nounsSubjM2H] [verbsObj] [nounsAbs1H$first, p.V, t.H::nounsAbs3$third, p.V::nounsAbsAS].
+#34
+[adjectivesH$adj, p.R, t.H, g.M$$U] волка [adverbsDeg] [adverbsHowCmp] [infinitivesDoSubj].
+#35
+[nounsAbsM2H::nounsAbsAS::nounsAbs1H$$U] — понятие [adjectivesH$adj, p.I, t.H, g.A]. [Особенно::Даже] [когда::если] [$$rAction].
+#36
+Нельзя просто так взять и [infinitivesDoneObj] [nounsItemM2H$second, p.V, t.H, g.M::nounsItemFH$first, p.V, t.H].
+#37
+Любишь [infinitivesDo] - люби и [{nounsItemM2H$second, p.V, t.H, g.M && infinitivesDoObj}].
+#38
+Если нет [nounsAbs1H$first, p.R, t.H], то [nounsAbsAS$second, p.T, t.S, g.A] [@sToWhom2] не поможешь.
+#39
+Безумно можно быть [adjectivesH$adj, p.T, t.H, g.M::@sByWhom2].
+#40
+Семь раз [verbsMakeDone] - один раз [verbsMakeDone].
+Семь раз [verbsMakeDone::{verbsMakeSubj && nounsSubjM2H$second, p.R, t.H, G.M}::verbsMakeSubj] - один раз
+#41
+Зачем [infinitivesDo], зачем [infinitivesDo], если можно [nounsContainer] [@rInf].
+#42
+[verbsMakeSubj::verbsMakeDone::{verbsMakeSubj && nounsSubjM2H$second, p.R, t.H, G.M}].
+[verbsOrderSubj$U], [verbsOrderSubj], [verbsOrderSubj::verbsMakeDone], [verbsOrderSubj::verbsMakeDone].
+#43
+Самое [важное::главное] в жинзи — [infinitivesDoneObj] [@rItem].

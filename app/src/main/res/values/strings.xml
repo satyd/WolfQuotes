@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Цитаты Волка</string>
+    <string name="text_on_start">АУФ.</string>
+    <string name="main_button_name">ХОЧУ ЦИТАТУ!</string>
+    <string name="downvote_text">чёт не то</string>
+    <string name="upvote_text">АУФ</string>
+    <string name="sample_text"><![CDATA[<sample text>]]></string>
+</resources>
