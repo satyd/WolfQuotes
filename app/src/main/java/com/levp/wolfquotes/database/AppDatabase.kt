@@ -11,12 +11,15 @@ abstract class AppDatabase:RoomDatabase() {
     abstract fun historyDao():HistoryDao
 
     companion object{
+        @Volatile
         var INSTANCE: AppDatabase? = null
+
+        const val dbName = "quotesDB"
 
         fun getAppDataBase(context: Context): AppDatabase? {
             if (INSTANCE == null){
-                synchronized(AppDatabase::class){
-                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "quotesDB").build()
+                synchronized(this){
+                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, dbName).allowMainThreadQueries().build()
                 }
             }
             return INSTANCE

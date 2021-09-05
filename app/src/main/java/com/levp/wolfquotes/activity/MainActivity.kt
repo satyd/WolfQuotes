@@ -4,16 +4,24 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
+import androidx.lifecycle.ViewModelProvider
 import com.levp.wolfquotes.Dec
 import com.levp.wolfquotes.R
 import com.levp.wolfquotes.WordList
 import com.levp.wolfquotes.buildStorage
+import com.levp.wolfquotes.database.AppDBhelper.db
+import com.levp.wolfquotes.database.AppDBhelper.historyDao
+import com.levp.wolfquotes.database.AppDBhelper.historyList
 import com.levp.wolfquotes.database.AppDatabase
-import com.levp.wolfquotes.database.HistoryDao
+import com.levp.wolfquotes.database.Repository
 import com.levp.wolfquotes.models.HistoryEntryEntity
+import com.levp.wolfquotes.models.HistoryViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -36,19 +44,21 @@ class MainActivity : AppCompatActivity() {
         const val APP_PREFERENCES_HISTORY = "history_counter"
         lateinit var settings : SharedPreferences
         var historySize = 0
+        lateinit var historyModel : HistoryViewModel
 
-        var db : AppDatabase? = null
-        var historyDao:HistoryDao? = null
     }
 
     lateinit var text : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initData()
 
-        settings = getSharedPreferences(MainActivity.APP_PREFERENCES, MODE_PRIVATE)
+        settings = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
         historySize = settings.getInt(APP_PREFERENCES_HISTORY, 0)
+
+
 
         main_btn_gen.setOnClickListener{
             genTemplate()
@@ -56,14 +66,19 @@ class MainActivity : AppCompatActivity() {
         goto_history.setOnClickListener {
             openHistory()
         }
+        downvote_btn.setOnClickListener{
+            downvote()
+        }
+        initDB()
+    }
 
-        db = Room.databaseBuilder(this, AppDatabase::class.java, "database").allowMainThreadQueries().build()
-        historyDao = db!!.historyDao()
+    private fun downvote() {
+        //Log.e("current list size", HistoryViewModel.historyListLiveData.value?.size.toString())
     }
 
     private fun openHistory() {
         val i = Intent(this,HistoryActivity::class.java)
-        //intent.putExtra()
+
         startActivity(i)
     }
 
@@ -94,6 +109,19 @@ class MainActivity : AppCompatActivity() {
         if(settings.contains(APP_PREFERENCES_HISTORY))
             historySize =settings.getInt(APP_PREFERENCES_HISTORY,0)
     }
+    private fun initDB(){
+        CoroutineScope(Dispatchers.Default).launch {
+
+            db = AppDatabase.getAppDataBase(this@MainActivity)
+            historyDao = db!!.historyDao()
+
+            historyModel = ViewModelProvider(this@MainActivity).get(HistoryViewModel::class.java)
+            //Log.e("Model size", historyModel.historyListLiveData.value?.size.toString())
+
+            historyList =  ArrayList(historyDao!!.pickAllHistory())
+
+        }
+    }
     private fun genTemplate()
     {
         val template = weightedRandom()
@@ -106,11 +134,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun writeToHistory(template: Int) {
-
         val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.UK)
         val currentDate = sdf.format(Date())
         val entry = HistoryEntryEntity(historySize, quote, currentDate, "t#$template")
-        historyDao?.insertEntry(entry)
+
+        CoroutineScope(Dispatchers.Default).launch {
+            historyDao?.insertEntry(entry)
+        }
     }
 
     fun calcOverallWeight(): Int {
