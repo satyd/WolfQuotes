@@ -135,7 +135,7 @@
 Безумно можно быть [adjectivesH$adj, p.T, t.H, g.M::@sByWhom2].
 #40
 Семь раз [verbsMakeDone] - один раз [verbsMakeDone].
-Семь раз [verbsMakeDone::{verbsMakeSubj && nounsSubjM2H$second, p.R, t.H, G.M}::verbsMakeSubj] - один раз
+Семь раз [verbsMakeDone::{verbsMakeSubj && nounsSubjM2H$second, p.R, t.H, G.M}::verbsMakeSubj] - один раз [verbsMakeDone].
 #41
 Зачем [infinitivesDo], зачем [infinitivesDo], если можно [nounsContainer] [@rInf].
 #42

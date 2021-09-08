@@ -1,11 +1,20 @@
 package com.levp.wolfquotes.activity
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProvider
 import com.levp.wolfquotes.Dec
 import com.levp.wolfquotes.R
@@ -15,7 +24,6 @@ import com.levp.wolfquotes.database.AppDBhelper.db
 import com.levp.wolfquotes.database.AppDBhelper.historyDao
 import com.levp.wolfquotes.database.AppDBhelper.historyList
 import com.levp.wolfquotes.database.AppDatabase
-import com.levp.wolfquotes.database.Repository
 import com.levp.wolfquotes.models.HistoryEntryEntity
 import com.levp.wolfquotes.models.HistoryViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,6 +54,12 @@ class MainActivity : AppCompatActivity() {
         var historySize = 0
         lateinit var historyModel : HistoryViewModel
 
+
+        //notifications
+        lateinit var notificationManager: NotificationManager
+
+        const val NOTIFICATION_ID = 101
+        var CHANNEL_ID = "channelID"
     }
 
     lateinit var text : String
@@ -66,10 +80,38 @@ class MainActivity : AppCompatActivity() {
         goto_history.setOnClickListener {
             openHistory()
         }
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CHANNEL_ID = "my_channel_01"
+            val name: CharSequence = "my_channel"
+            val Description = "This is my channel"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
+            mChannel.description = Description
+            mChannel.enableLights(true)
+            mChannel.lightColor = Color.RED
+            mChannel.enableVibration(true)
+            mChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+            mChannel.setShowBadge(false)
+            notificationManager?.createNotificationChannel(mChannel)
+        }
         downvote_btn.setOnClickListener{
-            downvote()
+            genTemplate()
+            val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.icon1_small_hdpi)
+                .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.icon1_small))
+                .setContentTitle("Цитата дня:")
+                .setContentText(quote)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            with(NotificationManagerCompat.from(this)) {
+                notificationManager.notify(NOTIFICATION_ID, builder.build()) // посылаем уведомление
+            }
         }
         initDB()
+
     }
 
     private fun downvote() {
@@ -77,7 +119,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openHistory() {
-        val i = Intent(this,HistoryActivity::class.java)
+        val i = Intent(this, HistoryActivity::class.java)
 
         startActivity(i)
     }
@@ -107,7 +149,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if(settings.contains(APP_PREFERENCES_HISTORY))
-            historySize =settings.getInt(APP_PREFERENCES_HISTORY,0)
+            historySize =settings.getInt(APP_PREFERENCES_HISTORY, 0)
     }
     private fun initDB(){
         CoroutineScope(Dispatchers.Default).launch {
