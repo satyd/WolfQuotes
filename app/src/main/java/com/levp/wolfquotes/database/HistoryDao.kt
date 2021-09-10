@@ -13,6 +13,9 @@ interface HistoryDao {
     @Query("SELECT * FROM HISTORY_TABLE ORDER BY hisDateTime DESC")
     fun pickAllHistory():List<HistoryEntryEntity>
 
+//    @Query("SELECT * FROM FAVORITES_TABLE ORDER BY hisDateTime DESC")
+//    fun pickAllFavorites():List<HistoryEntryEntity>
+
     @Query("SELECT * FROM HISTORY_TABLE ORDER BY hisDateTime DESC LIMIT :amount")
     fun pickPartHistory(amount:Int):List<HistoryEntryEntity>
 

@@ -3,6 +3,7 @@
     package="com.levp.wolfquotes">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/icon1"
@@ -11,9 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WolfQuotes">
         <activity
+            android:name=".activity.PointsActivity"
+            android:label="@string/points"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
+            android:name=".activity.AboutActivity"
+            android:label="@string/about_text"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
             android:name=".activity.HistoryActivity"
             android:parentActivityName=".activity.MainActivity" />
-
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait">

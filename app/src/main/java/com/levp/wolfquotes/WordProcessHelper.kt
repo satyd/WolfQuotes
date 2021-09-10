@@ -1,6 +1,5 @@
 package com.levp.wolfquotes
 
-import com.levp.wolfquotes.activity.MainActivity
 import java.io.*
 import java.util.*
 import java.util.regex.Pattern
@@ -11,12 +10,9 @@ object Dec {
     var soft = "кшч"
     @Throws(IOException::class)
     fun funcInit(ins: InputStream?) {
-        // = AppCompatActivity.getResources().openRawResource(R.raw.func);
+
         val br = BufferedReader(InputStreamReader(ins))
-        //FileReader fr = new FileReader("func.txt");
-        //BufferedReader br = new BufferedReader(new InputStreamReader(ins);
         var str = br.readLine()
-        val iter = 0
         while (str != null) {
             if (!str.contains(";")) {
                 val buf = StringBuilder(str)
@@ -38,7 +34,7 @@ object Dec {
         val preLast = tmp[tmp.length - 1]
         return when (p) {
             padezh.RODIT -> if (t == type.HARD && soft.indexOf(preLast) == -1) tmp + "ы" else tmp + "и"
-            padezh.DAT, padezh.PREDLOZH -> tmp + "е"
+            padezh.DATEL, padezh.PREDL -> tmp + "е"
             padezh.VINIT -> if (t == type.HARD) tmp + "у" else tmp + "ю"
             padezh.TVORIT -> if (t == type.HARD) tmp + "ой" else tmp + "ей"
             else -> noun
@@ -52,10 +48,10 @@ object Dec {
         ) else noun
         return when (p) {
             padezh.RODIT -> if (t == type.HARD) tmp + "а" else tmp + "я"
-            padezh.DAT -> if (t == type.HARD) tmp + "у" else tmp + "ю"
+            padezh.DATEL -> if (t == type.HARD) tmp + "у" else tmp + "ю"
             padezh.VINIT -> if (t == type.HARD) noun else if (g == gender.A) noun else tmp + "я"
             padezh.TVORIT -> if (t == type.HARD) tmp + "ом" else tmp + "ем"
-            padezh.PREDLOZH -> tmp + "е"
+            padezh.PREDL -> tmp + "е"
             else -> noun
         }
     }
@@ -63,7 +59,7 @@ object Dec {
     fun third(noun: String, p: padezh?): String {
         val tmp = noun.substring(0, noun.length - 1)
         return when (p) {
-            padezh.RODIT, padezh.DAT, padezh.PREDLOZH -> tmp + "и"
+            padezh.RODIT, padezh.DATEL, padezh.PREDL -> tmp + "и"
             padezh.TVORIT -> tmp + "ью"
             else -> noun
         }
@@ -75,19 +71,19 @@ object Dec {
         return when (g) {
             gender.F -> when (p) {
                 padezh.SHORT -> if (t == type.HARD) tmp + 'a' else tmp + "яя"
-                padezh.IM -> if (t == type.HARD) tmp + "ая" else tmp + "яя"
-                padezh.RODIT, padezh.DAT, padezh.PREDLOZH, padezh.TVORIT -> if (t == type.HARD) tmp + "ой" else tmp + "ей"
+                padezh.IMEN -> if (t == type.HARD) tmp + "ая" else tmp + "яя"
+                padezh.RODIT, padezh.DATEL, padezh.PREDL, padezh.TVORIT -> if (t == type.HARD) tmp + "ой" else tmp + "ей"
                 padezh.VINIT -> if (t == type.HARD) tmp + "ую" else tmp + "юю"
                 else -> adjective
             }
             gender.M, gender.A -> when (p) {
                 padezh.SHORT -> if (g == gender.A) if (t == type.HARD) tmp + "о" else tmp + "е" else adjective
-                padezh.IM -> if (g == gender.A) if (t == type.HARD) tmp + "ое" else tmp + "ее" else adjective
+                padezh.IMEN -> if (g == gender.A) if (t == type.HARD) tmp + "ое" else tmp + "ее" else adjective
                 padezh.RODIT -> if (t == type.HARD) tmp + "ого" else tmp + "его"
-                padezh.DAT -> if (t == type.HARD) tmp + "ому" else tmp + "ему"
+                padezh.DATEL -> if (t == type.HARD) tmp + "ому" else tmp + "ему"
                 padezh.VINIT -> if (g == gender.A) if (t == type.HARD) tmp + "ое" else tmp + "ее" else if (t == type.HARD) tmp + "ого" else tmp + "его"
                 padezh.TVORIT -> if (preLast != 'и') if (t == type.HARD) tmp + "ым" else tmp + "им" else tmp + preLast + "м"
-                padezh.PREDLOZH -> if (t == type.HARD) tmp + "ом" else tmp + "ем"
+                padezh.PREDL -> if (t == type.HARD) tmp + "ом" else tmp + "ем"
                 else -> adjective
             }
             else -> adjective
@@ -95,7 +91,7 @@ object Dec {
     }
 
     enum class padezh {
-        IM, RODIT, DAT, VINIT, TVORIT, PREDLOZH, SHORT
+        IMEN, RODIT, DATEL, VINIT, TVORIT, PREDL, SHORT
     }
 
     enum class type {
@@ -107,7 +103,7 @@ object Dec {
     }
 }
 
-object buildStorage {
+object BuildStorage {
     var storage = LinkedHashMap<String, ArrayList<String>>()
     var Presets = ArrayList<String>()
     @Throws(IOException::class)
@@ -296,11 +292,11 @@ fun transcript(`in`: String): String{
                     }
                     var padezh: Dec.padezh = when (p) {
                         'R' -> Dec.padezh.RODIT
-                        'D' -> Dec.padezh.DAT
+                        'D' -> Dec.padezh.DATEL
                         'V' -> Dec.padezh.VINIT
                         'T' -> Dec.padezh.TVORIT
-                        'P' -> Dec.padezh.PREDLOZH
-                        else -> Dec.padezh.IM
+                        'P' -> Dec.padezh.PREDL
+                        else -> Dec.padezh.IMEN
                     }
                     var type: Dec.type = when (t) {
                         'S' -> Dec.type.SOFT
@@ -312,10 +308,10 @@ fun transcript(`in`: String): String{
                         else -> Dec.gender.M
                     }
                     when (params[0]) {
-                        "adj" -> work = Dec.adj(work!!, padezh, type, gender)
-                        "first" -> work = Dec.first(work!!, padezh, type)
-                        "second" -> work = Dec.second(work!!, padezh, type, gender)
-                        "third" -> work = Dec.third(work!!, padezh)
+                        "adj" -> work = Dec.adj(work, padezh, type, gender)
+                        "first" -> work = Dec.first(work, padezh, type)
+                        "second" -> work = Dec.second(work, padezh, type, gender)
+                        "third" -> work = Dec.third(work, padezh)
                         else -> {
                         }
                     }
@@ -345,6 +341,7 @@ fun transcript(`in`: String): String{
     }
     return res.toString()
 }
+
 fun randNot(): String {
     val res = Random().nextInt(2)
     return when (res) {
@@ -391,5 +388,5 @@ fun weightedString(weightRnd: ArrayList<String>): String {
 }
 
 fun roll(s: String): String {
-    return MainActivity.wordMap[s]!!.getWord()
+    return Jmeh.wordMap[s]!!.getWord()
 }

@@ -5,4 +5,11 @@
     <string name="downvote_text">чёт не то</string>
     <string name="upvote_text">АУФ</string>
     <string name="sample_text"><![CDATA[<sample text>]]></string>
+
+    <string name="action_settings">Настройки</string>
+    <string name="action_favorites">Избранное</string>
+    <string name="action_info">Информация</string>
+    <string name="points"><![CDATA[<для отладки>]]></string>
+    <string name="about_title">О приложении</string>
+
 </resources>
