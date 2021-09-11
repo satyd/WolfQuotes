@@ -17,10 +17,13 @@
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
             android:name=".activity.AboutActivity"
-            android:label="@string/about_text"
+            android:label="@string/about_title"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
             android:name=".activity.HistoryActivity"
+            android:parentActivityName=".activity.MainActivity" />
+        <activity
+            android:name=".activity.FavoritesActivity"
             android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.MainActivity"

@@ -24,6 +24,7 @@ import com.levp.wolfquotes.database.AppDBhelper.db
 import com.levp.wolfquotes.database.AppDBhelper.historyDao
 import com.levp.wolfquotes.database.AppDBhelper.historyList
 import com.levp.wolfquotes.database.AppDatabase
+import com.levp.wolfquotes.models.FavoritesEntryEntity
 import com.levp.wolfquotes.models.HistoryEntryEntity
 import com.levp.wolfquotes.models.HistoryViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
 
         main_btn_gen.setOnClickListener { makeQoute() }
         goto_history.setOnClickListener { openHistory() }
+        add_to_favorites.setOnClickListener { writeToFavorites() }
         text_main.setOnLongClickListener(View.OnLongClickListener {
             if (quote != "АУФ.") {
                 val clipData = ClipData.newPlainText("text", quote)
@@ -125,7 +127,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun openHistory() {
         val i = Intent(this, HistoryActivity::class.java)
-
         startActivity(i)
     }
 
@@ -167,12 +168,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun writeToFavorites() {
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.UK)
+        val currentDate = sdf.format(Date())
+        val entry = FavoritesEntryEntity(historySize, quote, currentDate, "t#${Jmeh.template}")
+
+        CoroutineScope(Dispatchers.Default).launch {
+            historyDao?.insertFavEntry(entry)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_main, menu)
         this.menu = menu
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         return when (item.itemId) {
@@ -182,7 +194,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_favorite -> {
-                getFavorite()
+                gotoFavorites()
                 true
             }
             R.id.action_info -> {
@@ -200,8 +212,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getFavorite() {
-
+    private fun gotoFavorites() {
+        val i = Intent(this, FavoritesActivity::class.java)
+        startActivity(i)
     }
 }
 

@@ -12,5 +12,5 @@
         android:padding="10dp"
         android:textAlignment="textStart"
         android:textSize="12sp"
-        android:text="@string/about_text"/>
+        android:text="@string/about_title"/>
 </RelativeLayout>
