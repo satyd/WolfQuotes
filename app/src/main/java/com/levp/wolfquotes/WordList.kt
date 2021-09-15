@@ -1,11 +1,14 @@
 package com.levp.wolfquotes
 
 import com.levp.wolfquotes.activity.MainActivity
+import com.levp.wolfquotes.database.AppDBHelper.historyDao
+import com.levp.wolfquotes.database.Repository
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 
 object Jmeh{
@@ -15,11 +18,12 @@ object Jmeh{
     var quote = "Ауф."
     var template = -1
     const val totalTemplates = 43
-    lateinit var log : ArrayList<Int>
+    var log : ArrayList<Int>? = null
 
     fun calcOverallWeight(): Int {
         var res = 0
-        for (i in log.indices) res += log.get(i)
+        if(log!=null)
+            for (i in log?.indices!!) res += log!![i]
         overallWeight = res
         return res
     }
@@ -28,13 +32,14 @@ object Jmeh{
         val random = Random().nextInt(overallWeight + 1)
         var counter = 0
         var res = 0
-        for (i in log.indices) {
-            counter += log.get(i)
-            if (counter >= random) {
-                res = i
-                break
+        if(log!=null)
+            for (i in log!!.indices) {
+                counter += log!![i]
+                if (counter >= random) {
+                    res = i
+                    break
+                }
             }
-        }
         return res
     }
     fun genTemplate() : String
@@ -99,7 +104,7 @@ object Jmeh{
             if (str == null || str.length <= 1) break
         }
     }
-    fun initData(){
+    fun initData(rep:Repository){
         readFile()
         val patternStorageStream = MainActivity::class.java.getResource("/res/raw/patterns.txt")!!.readBytes()
         val presetStorageStream = MainActivity::class.java.getResource("/res/raw/presets.txt")!!.readBytes()
@@ -109,9 +114,13 @@ object Jmeh{
         BuildStorage.presetInit(presetStorageStream.inputStream())
         Dec.funcInit(funcStorageStream.inputStream())
 
-        log = ArrayList<Int>(totalTemplates)
-        repeat(totalTemplates) { log.add(5) }
+        //log = ArrayList<Int>(totalTemplates)
+
         calcOverallWeight()
+    }
+    fun logInit(rep:Repository)
+    {
+        log = rep.getLogs()
     }
 
 }

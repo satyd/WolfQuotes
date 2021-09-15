@@ -1,5 +1,6 @@
 package com.levp.wolfquotes.activity
 
+import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.*
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.sax.StartElementListener
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -20,13 +22,17 @@ import androidx.lifecycle.ViewModelProvider
 import com.levp.wolfquotes.*
 import com.levp.wolfquotes.Jmeh.genTemplate
 import com.levp.wolfquotes.Jmeh.log
-import com.levp.wolfquotes.database.AppDBhelper.db
-import com.levp.wolfquotes.database.AppDBhelper.historyDao
-import com.levp.wolfquotes.database.AppDBhelper.historyList
+import com.levp.wolfquotes.Jmeh.template
+import com.levp.wolfquotes.Jmeh.totalTemplates
+import com.levp.wolfquotes.database.AppDBHelper.db
+import com.levp.wolfquotes.database.AppDBHelper.historyDao
+import com.levp.wolfquotes.database.AppDBHelper.historyList
 import com.levp.wolfquotes.database.AppDatabase
+import com.levp.wolfquotes.database.Repository
 import com.levp.wolfquotes.models.FavoritesEntryEntity
 import com.levp.wolfquotes.models.HistoryEntryEntity
 import com.levp.wolfquotes.models.HistoryViewModel
+import com.levp.wolfquotes.models.LogEntryEntity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +46,10 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        lateinit var quote: String
+        val STARTING_QUOTE = "Ауф."
+
+        var quote: String = STARTING_QUOTE
+
         const val APP_PREFERENCES = "mysettings"
         const val APP_PREFERENCES_HISTORY = "history_counter"
         lateinit var settings: SharedPreferences
@@ -49,14 +58,18 @@ class MainActivity : AppCompatActivity() {
 
         //notifications
         lateinit var notificationManager: NotificationManager
-
         const val NOTIFICATION_ID = 101
         var CHANNEL_ID = "channelID"
+
     }
+
+    lateinit var repository : Repository
 
     //String ~== group id, WordList == группа слов
     private var menu: Menu? = null
     lateinit var text: String
+
+    private var voted = true
 
     var clipboardManager: ClipboardManager? = null
 
@@ -64,14 +77,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        repository = Repository(app = application)
+
         val mActionBarToolbar = findViewById<View>(R.id.toolbar) as Toolbar
         setSupportActionBar(mActionBarToolbar)
 
-        main_btn_gen.setOnClickListener { makeQoute() }
+        main_btn_gen.setOnClickListener { makeQuote() }
         goto_history.setOnClickListener { openHistory() }
         add_to_favorites.setOnClickListener { writeToFavorites() }
+
         text_main.setOnLongClickListener(View.OnLongClickListener {
-            if (quote != "АУФ.") {
+            if (quote != STARTING_QUOTE) {
                 val clipData = ClipData.newPlainText("text", quote)
                 clipboardManager?.setPrimaryClip(clipData)
                 Toast.makeText(baseContext, " Текст скопирован! ", Toast.LENGTH_SHORT).show()
@@ -83,7 +100,7 @@ class MainActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CHANNEL_ID = "my_channel_01"
-            val name: CharSequence = "my_channel"
+            val name: CharSequence = "quotes_channel"
             val Description = "This is my channel"
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
@@ -95,22 +112,55 @@ class MainActivity : AppCompatActivity() {
             mChannel.setShowBadge(false)
             notificationManager.createNotificationChannel(mChannel)
         }
-        downvote_btn.setOnClickListener { downvote() }
+
         onInit()
+        upvote_btn.setOnClickListener { upVote() }
+        downvote_btn.setOnClickListener { downVote() }
 
         //onCreateOptionsMenu(menu)
 
     }
 
-    private fun makeQoute() {
+    private fun makeQuote() {
+        voted = false
         quote = genTemplate()
         text_main.text = quote
         historySize++
         writeToHistory(Jmeh.template)
     }
 
-    private fun downvote() {
+    private fun upVote() {
+
+        if(log==null)
+            Jmeh.logInit(repository)
+
+        if(!voted)
+            if (log!![template] < 13) {
+                log!![template] += 1
+                historyDao?.updLog(log!![template], template)
+                Toast.makeText(this, "+1 шаблону #$template", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "шаблон #$template уже достаточно хорош", Toast.LENGTH_SHORT).show()
+            }
+        voted = true
+    }
+
+    private fun downVote() {
+        if(log==null)
+            Jmeh.logInit(repository)
+        if(!voted)
+            if (log!![template] > 5) {
+                log!![template] -= 1
+                historyDao?.updLog(log!![template], template)
+                Toast.makeText(this, "-1 шаблону #$template", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "шаблон #$template уже достаточно заминусён, хватит с него", Toast.LENGTH_SHORT).show()
+            }
+        voted = true
         //Log.e("current list size", HistoryViewModel.historyListLiveData.value?.size.toString())
+    }
+
+    fun createNotification() {
         quote = genTemplate()
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.icon1_small_hdpi)
@@ -135,6 +185,7 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         val editor: Editor = settings.edit()
         editor.putInt(APP_PREFERENCES_HISTORY, historySize)
+        //editor.putInt(APP_PREFERENCES_HISTORY, historySize)
         editor.apply()
     }
 
@@ -145,8 +196,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onInit() {
-        Jmeh.initData()
-
+        Jmeh.initData(repository)
         settings = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
         historySize = settings.getInt(APP_PREFERENCES_HISTORY, 0)
 
@@ -155,7 +205,10 @@ class MainActivity : AppCompatActivity() {
             historyDao = db!!.historyDao()
             historyModel = ViewModelProvider(this@MainActivity).get(HistoryViewModel::class.java)
             historyList = ArrayList(historyDao!!.pickAllHistory())
+            if(historyDao?.getLogCount() == 0)
+                initLogDB()
         }
+        Jmeh.logInit(repository)
     }
 
     private fun writeToHistory(template: Int) {
@@ -175,6 +228,14 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.Default).launch {
             historyDao?.insertFavEntry(entry)
+        }
+    }
+
+    private fun initLogDB(){
+        for(i in 0..totalTemplates)
+        {
+            val entry = LogEntryEntity(logTemplate = i+1, logEnabled = true,logPoints = 5)
+            historyDao?.initLogs(entry)
         }
     }
 

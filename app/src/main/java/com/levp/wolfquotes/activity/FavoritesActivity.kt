@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.levp.wolfquotes.R
 import com.levp.wolfquotes.adapters.FavoritesAdapter
-import com.levp.wolfquotes.database.AppDBhelper.favsList
-import com.levp.wolfquotes.database.AppDBhelper.historyDao
+import com.levp.wolfquotes.database.AppDBHelper.favsList
+import com.levp.wolfquotes.database.AppDBHelper.historyDao
 import kotlinx.android.synthetic.main.activity_favorites.*
 import kotlinx.coroutines.*
 
