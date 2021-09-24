@@ -1,0 +1,16 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="bg_names">
+        <item>Волк 1</item>
+        <item>Волк 2</item>
+        <item>Волк 3</item>
+    </string-array>
+
+ <string-array name="bg_entries">
+        <item>volk0</item>
+        <item>volk1</item>
+        <item>volk2</item>
+    </string-array>
+
+
+</resources>

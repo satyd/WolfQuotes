@@ -1,15 +1,15 @@
 package com.levp.wolfquotes.activity
 
-import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.*
 import android.content.SharedPreferences.Editor
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
-import android.sax.StartElementListener
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.levp.wolfquotes.*
 import com.levp.wolfquotes.Jmeh.genTemplate
 import com.levp.wolfquotes.Jmeh.log
@@ -52,6 +53,9 @@ class MainActivity : AppCompatActivity() {
 
         const val APP_PREFERENCES = "mysettings"
         const val APP_PREFERENCES_HISTORY = "history_counter"
+        const val LATEST_QUOTE = "latest quote"
+        const val WAS_VOTED = "was_voted"
+
         lateinit var settings: SharedPreferences
         var historySize = 0
         lateinit var historyModel: HistoryViewModel
@@ -63,7 +67,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    lateinit var repository : Repository
+    //Settings
+    private var isSoundOn: Boolean? = false
+    private var currentBackgroundImage: String? = "volk0.jpg"
+
+    lateinit var repository: Repository
 
     //String ~== group id, WordList == группа слов
     private var menu: Menu? = null
@@ -77,6 +85,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //Получаем настройки из преференсов
 
         repository = Repository(app = application)
 
@@ -131,30 +141,36 @@ class MainActivity : AppCompatActivity() {
 
     private fun upVote() {
 
-        if(log==null)
+        if (log == null)
             Jmeh.logInit(repository)
 
-        if(!voted)
+        if (!voted)
             if (log!![template] < 13) {
                 log!![template] += 1
                 historyDao?.updLog(log!![template], template)
                 Toast.makeText(this, "+1 шаблону #$template", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "шаблон #$template уже достаточно хорош", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "шаблон #$template уже достаточно хорош", Toast.LENGTH_SHORT)
+                    .show()
             }
         voted = true
+        if (isSoundOn!!) MediaPlayer.create(this, R.raw.auf1).start()
     }
 
     private fun downVote() {
-        if(log==null)
+        if (log == null)
             Jmeh.logInit(repository)
-        if(!voted)
+        if (!voted)
             if (log!![template] > 5) {
                 log!![template] -= 1
                 historyDao?.updLog(log!![template], template)
                 Toast.makeText(this, "-1 шаблону #$template", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "шаблон #$template уже достаточно заминусён, хватит с него", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "шаблон #$template уже достаточно заминусён, хватит с него",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         voted = true
         //Log.e("current list size", HistoryViewModel.historyListLiveData.value?.size.toString())
@@ -185,12 +201,31 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         val editor: Editor = settings.edit()
         editor.putInt(APP_PREFERENCES_HISTORY, historySize)
+
+        editor.putString(LATEST_QUOTE, quote)
+
+        editor.putBoolean(WAS_VOTED, voted)
         //editor.putInt(APP_PREFERENCES_HISTORY, historySize)
         editor.apply()
     }
 
     override fun onResume() {
         super.onResume()
+        val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        isSoundOn = prefs.getBoolean("isSoundEnabled", false)
+        currentBackgroundImage = prefs.getString("backgroundImage", "volk0")
+
+        val resourceId: Int = resources.getIdentifier(
+            currentBackgroundImage,
+            "drawable",
+            packageName
+        )
+
+        Log.d("bg_image", currentBackgroundImage.toString())
+        Log.d("soundOn", isSoundOn.toString())
+
+        main_bg.setBackgroundResource(resourceId)
+
         if (settings.contains(APP_PREFERENCES_HISTORY))
             historySize = settings.getInt(APP_PREFERENCES_HISTORY, 0)
     }
@@ -205,7 +240,7 @@ class MainActivity : AppCompatActivity() {
             historyDao = db!!.historyDao()
             historyModel = ViewModelProvider(this@MainActivity).get(HistoryViewModel::class.java)
             historyList = ArrayList(historyDao!!.pickAllHistory())
-            if(historyDao?.getLogCount() == 0)
+            if (historyDao?.getLogCount() == 0)
                 initLogDB()
         }
         Jmeh.logInit(repository)
@@ -231,10 +266,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initLogDB(){
-        for(i in 0..totalTemplates)
-        {
-            val entry = LogEntryEntity(logTemplate = i+1, logEnabled = true,logPoints = 5)
+    private fun initLogDB() {
+        for (i in 0..totalTemplates) {
+            val entry = LogEntryEntity(logTemplate = i + 1, logEnabled = true, logPoints = 5)
             historyDao?.initLogs(entry)
         }
     }
@@ -250,12 +284,13 @@ class MainActivity : AppCompatActivity() {
 
         return when (item.itemId) {
             R.id.action_settings -> {
-                //val intent = Intent(this@MainActivity, SettingsActivity::class.java)
-                //startActivity(intent)
+                val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+                startActivity(intent)
                 true
             }
             R.id.action_favorite -> {
-                gotoFavorites()
+                val i = Intent(this, FavoritesActivity::class.java)
+                startActivity(i)
                 true
             }
             R.id.action_info -> {
@@ -273,9 +308,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun gotoFavorites() {
-        val i = Intent(this, FavoritesActivity::class.java)
-        startActivity(i)
-    }
 }
 

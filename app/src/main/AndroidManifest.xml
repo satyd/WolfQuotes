@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WolfQuotes">
         <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".activity.MainActivity"/>
+        <activity
             android:name=".activity.PointsActivity"
             android:label="@string/points"
             android:theme="@style/Theme.AppCompat.Dialog" />

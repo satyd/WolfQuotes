@@ -1,9 +1,11 @@
 package com.levp.wolfquotes.activity
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.levp.wolfquotes.R
@@ -11,6 +13,8 @@ import com.levp.wolfquotes.adapters.FavoritesAdapter
 import com.levp.wolfquotes.database.AppDBHelper.favsList
 import com.levp.wolfquotes.database.AppDBHelper.historyDao
 import kotlinx.android.synthetic.main.activity_favorites.*
+import kotlinx.android.synthetic.main.activity_favorites.toolbar
+import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.coroutines.*
 
 
@@ -45,12 +49,24 @@ class FavoritesActivity : AppCompatActivity() {
         favorites_holder.addItemDecoration(dividerItemDecoration)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val currentBackgroundImage = prefs.getString("backgroundImage", "volk0")
 
-    fun updateDB()
-    {
-        CoroutineScope(Dispatchers.Default).launch{
-            Log.e("DB updated","dp updated")
-            favsList =  ArrayList(historyDao!!.pickAllFavorites())
+        val resourceId: Int =
+            resources.getIdentifier(currentBackgroundImage, "drawable", packageName)
+
+        //Log.d("bg_image", currentBackgroundImage.toString())
+        //Log.d("soundOn", isSoundOn.toString())
+
+        favorites_holder.setBackgroundResource(resourceId)
+    }
+
+    fun updateDB() {
+        CoroutineScope(Dispatchers.Default).launch {
+            Log.e("DB updated", "dp updated")
+            favsList = ArrayList(historyDao!!.pickAllFavorites())
 
         }
     }
