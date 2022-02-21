@@ -4,18 +4,17 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.levp.wolfquotes.R
 import com.levp.wolfquotes.adapters.FavoritesAdapter
 import com.levp.wolfquotes.database.AppDBHelper.favsList
 import com.levp.wolfquotes.database.AppDBHelper.historyDao
+import com.levp.wolfquotes.databinding.ActivityFavoritesBinding
 import kotlinx.android.synthetic.main.activity_favorites.*
-import kotlinx.android.synthetic.main.activity_favorites.toolbar
-import kotlinx.android.synthetic.main.activity_history.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class FavoritesActivity : AppCompatActivity() {
@@ -23,18 +22,19 @@ class FavoritesActivity : AppCompatActivity() {
     //lateinit var historyList: ArrayList<HistoryEntryEntity>
     lateinit var favoritesAdapter: FavoritesAdapter
 
+    lateinit var binding: ActivityFavoritesBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_favorites)
+        binding = ActivityFavoritesBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        setSupportActionBar(toolbar as Toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        //historyViewModel =
         favsList = ArrayList(historyDao!!.pickAllFavorites())
         favoritesAdapter = FavoritesAdapter(favsList)
 
-        favorites_holder.apply {
+        binding.favoritesHolder.apply {
             layoutManager = LinearLayoutManager(applicationContext)
             adapter = favoritesAdapter
 
@@ -46,7 +46,7 @@ class FavoritesActivity : AppCompatActivity() {
             LinearLayoutManager(applicationContext).orientation
         )
 
-        favorites_holder.addItemDecoration(dividerItemDecoration)
+        binding.favoritesHolder.addItemDecoration(dividerItemDecoration)
     }
 
     override fun onResume() {

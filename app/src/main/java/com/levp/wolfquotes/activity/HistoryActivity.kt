@@ -12,6 +12,7 @@ import com.levp.wolfquotes.R
 import com.levp.wolfquotes.adapters.HistoryAdapter
 import com.levp.wolfquotes.database.AppDBHelper.historyDao
 import com.levp.wolfquotes.database.AppDBHelper.historyList
+import com.levp.wolfquotes.databinding.ActivityHistoryBinding
 import com.levp.wolfquotes.models.HistoryViewModel
 import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.android.synthetic.main.activity_history.toolbar
@@ -25,17 +26,19 @@ class HistoryActivity : AppCompatActivity() {
     lateinit var historyAdapter: HistoryAdapter
     lateinit var historyViewModel: HistoryViewModel
 
+    lateinit var binding: ActivityHistoryBinding
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_history)
-
-        setSupportActionBar(toolbar as Toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding = ActivityHistoryBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        
         //historyViewModel =
         historyList = ArrayList(historyDao!!.pickAllHistory())
         historyAdapter = HistoryAdapter(historyList)
 
-        history_holder.apply {
+        binding.historyHolder.apply {
             layoutManager = LinearLayoutManager(applicationContext)
 
             adapter = historyAdapter
@@ -48,7 +51,7 @@ class HistoryActivity : AppCompatActivity() {
             LinearLayoutManager(applicationContext).orientation
         )
 
-        history_holder.addItemDecoration(dividerItemDecoration)
+        binding.historyHolder.addItemDecoration(dividerItemDecoration)
     }
 
     override fun onResume() {

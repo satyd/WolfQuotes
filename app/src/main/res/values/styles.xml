@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents">
+        <item name="buttonPrimary">@style/AppTheme.ButtonPrimary</item>
+    </style>
+
+    <declare-styleable name="AppTheme">
+        <attr name="buttonPrimary" format="reference" />
+    </declare-styleable>
+
+    <style name="AppTheme.ButtonPrimary">
+        <item name="android:background">@drawable/rounded_corner_btn</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

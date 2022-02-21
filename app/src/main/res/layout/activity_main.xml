@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar_main" />
+<!--    <include-->
+<!--        android:id="@+id/toolbar"-->
+<!--        layout="@layout/toolbar_main" />-->
 
     <LinearLayout
         android:id="@+id/main_bg"
@@ -126,10 +126,9 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="10"
-                    android:background="@drawable/rounded_corner_btn"
+                    style="@style/AppTheme.ButtonPrimary"
                     android:text="@string/main_button_name"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="19sp" />
 
                 <Space
                     android:layout_width="0dp"
@@ -158,7 +157,7 @@
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="4"
-                    android:background="@drawable/rounded_corner_btn"
+                    style="@style/AppTheme.ButtonPrimary"
                     android:text="@string/downvote_text" />
 
                 <Space
@@ -171,7 +170,7 @@
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="4"
-                    android:background="@drawable/rounded_corner_btn"
+                    style="@style/AppTheme.ButtonPrimary"
                     android:text="@string/upvote_text" />
 
                 <Space

@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.WolfQuotes" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/blue_main</item>
-        <item name="colorPrimaryVariant">@color/blue_main_dark</item>
+        <item name="colorPrimary">@color/blue_main_dark</item>
+        <item name="colorPrimaryVariant">@color/blue_main_dark_af</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>

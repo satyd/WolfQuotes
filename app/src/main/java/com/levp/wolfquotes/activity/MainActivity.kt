@@ -30,11 +30,11 @@ import com.levp.wolfquotes.database.AppDBHelper.historyDao
 import com.levp.wolfquotes.database.AppDBHelper.historyList
 import com.levp.wolfquotes.database.AppDatabase
 import com.levp.wolfquotes.database.Repository
+import com.levp.wolfquotes.databinding.ActivityMainBinding
 import com.levp.wolfquotes.models.FavoritesEntryEntity
 import com.levp.wolfquotes.models.HistoryEntryEntity
 import com.levp.wolfquotes.models.HistoryViewModel
 import com.levp.wolfquotes.models.LogEntryEntity
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -67,6 +67,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private lateinit var binding: ActivityMainBinding
+    
     //Settings
     private var isSoundOn: Boolean? = false
     private var currentBackgroundImage: String? = "volk0.jpg"
@@ -84,37 +86,39 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         //Получаем настройки из преференсов
 
         repository = Repository(app = application)
 
-        val mActionBarToolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        setSupportActionBar(mActionBarToolbar)
+//        val mActionBarToolbar = binding.toolbar.toolbarMain
+//        setSupportActionBar(mActionBarToolbar)
 
-        main_btn_gen.setOnClickListener { makeQuote() }
-        goto_history.setOnClickListener { openHistory() }
-        add_to_favorites.setOnClickListener { writeToFavorites() }
+        binding.mainBtnGen.setOnClickListener { makeQuote() }
+        binding.gotoHistory.setOnClickListener { openHistory() }
+        binding.addToFavorites.setOnClickListener { writeToFavorites() }
 
-        text_main.setOnLongClickListener(View.OnLongClickListener {
+        binding.textMain.setOnLongClickListener {
             if (quote != STARTING_QUOTE) {
                 val clipData = ClipData.newPlainText("text", quote)
                 clipboardManager?.setPrimaryClip(clipData)
                 Toast.makeText(baseContext, " Текст скопирован! ", Toast.LENGTH_SHORT).show()
             }
             false
-        })
+        }
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CHANNEL_ID = "my_channel_01"
             val name: CharSequence = "quotes_channel"
-            val Description = "This is my channel"
+            val description = "This is my channel"
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
-            mChannel.description = Description
+            mChannel.description = description
             mChannel.enableLights(true)
             mChannel.lightColor = Color.RED
             mChannel.enableVibration(true)
@@ -124,8 +128,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         onInit()
-        upvote_btn.setOnClickListener { upVote() }
-        downvote_btn.setOnClickListener { downVote() }
+        binding.upvoteBtn.setOnClickListener { upVote() }
+        binding.downvoteBtn.setOnClickListener { downVote() }
 
         //onCreateOptionsMenu(menu)
 
@@ -134,7 +138,7 @@ class MainActivity : AppCompatActivity() {
     private fun makeQuote() {
         voted = false
         quote = genTemplate()
-        text_main.text = quote
+        binding.textMain.text = quote
         historySize++
         writeToHistory(Jmeh.template)
     }
@@ -173,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         voted = true
-        //Log.e("current list size", HistoryViewModel.historyListLiveData.value?.size.toString())
+
     }
 
     fun createNotification() {
@@ -224,7 +228,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("bg_image", currentBackgroundImage.toString())
         Log.d("soundOn", isSoundOn.toString())
 
-        main_bg.setBackgroundResource(resourceId)
+        binding.mainBg.setBackgroundResource(resourceId)
 
         if (settings.contains(APP_PREFERENCES_HISTORY))
             historySize = settings.getInt(APP_PREFERENCES_HISTORY, 0)
